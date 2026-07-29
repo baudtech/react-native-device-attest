@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!--
+	  App Attest environment for the example target.
+	  Attach this file to the target in Xcode (Build Settings →
+	  "Code Signing Entitlements" → DeviceAttestExample/DeviceAttestExample.entitlements)
+	  and enable the "App Attest" capability on an App ID that has it turned on
+	  in the Apple Developer portal, signing with your own team.
+	  Use "production" for TestFlight / App Store builds.
+	-->
+	<key>com.apple.developer.devicecheck.appattest-environment</key>
+	<string>development</string>
+</dict>
+</plist>

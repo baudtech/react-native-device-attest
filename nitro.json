@@ -1,0 +1,30 @@
+{
+  "$schema": "https://nitro.margelo.com/nitro.schema.json",
+  "cxxNamespace": [
+    "deviceattest"
+  ],
+  "ios": {
+    "iosModuleName": "DeviceAttest"
+  },
+  "android": {
+    "androidNamespace": [
+      "deviceattest"
+    ],
+    "androidCxxLibName": "DeviceAttest"
+  },
+  "autolinking": {
+    "DeviceAttest": {
+      "ios": {
+        "language": "swift",
+        "implementationClassName": "HybridDeviceAttest"
+      },
+      "android": {
+        "language": "kotlin",
+        "implementationClassName": "HybridDeviceAttest"
+      }
+    }
+  },
+  "ignorePaths": [
+    "**/node_modules"
+  ]
+}
