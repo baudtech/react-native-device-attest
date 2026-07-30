@@ -141,7 +141,7 @@ dependencies {
   // Google Play Integrity API (Standard request flow) + Play Services
   // availability check used by isSupported().
   implementation "com.google.android.play:integrity:1.6.0"
-  implementation "com.google.android.gms:play-services-base:18.5.0"
+  implementation "com.google.android.gms:play-services-base:18.10.0"
 }
 
 if (isNewArchitectureEnabled()) {
