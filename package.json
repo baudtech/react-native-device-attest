@@ -1,6 +1,6 @@
 {
   "name": "@baudtech/react-native-device-attest",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Unified device attestation for React Native — Apple App Attest and Google Play Integrity behind one Nitro-powered API",
   "main": "./lib/commonjs/index.js",
   "module": "./lib/module/index.js",
