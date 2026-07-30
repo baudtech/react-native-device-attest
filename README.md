@@ -16,6 +16,8 @@ device, wrapping the two platform services behind a single call:
 - React Native 0.76 or higher (new architecture)
 - iOS 14+ on a **real device** (App Attest is unsupported on the Simulator)
 - Android device with **Google Play Services**
+- Expo SDK 52 or higher, if you use Expo — a config plugin is included
+  (Expo is an optional peer dependency; bare React Native needs nothing extra)
 
 ## Installation
 
@@ -28,6 +30,66 @@ iOS:
 ```bash
 cd ios && pod install
 ```
+
+### Expo
+
+This module contains custom native code, so it does **not** work in Expo Go —
+you need a
+[development build](https://docs.expo.dev/develop/development-builds/introduction/).
+
+```bash
+npx expo install @baudtech/react-native-device-attest react-native-nitro-modules
+```
+
+Add the bundled config plugin to your app config:
+
+```json
+{
+  "expo": {
+    "plugins": ["@baudtech/react-native-device-attest"]
+  }
+}
+```
+
+Then regenerate the native projects:
+
+```bash
+npx expo prebuild --clean
+```
+
+The plugin writes the App Attest entitlement into the generated iOS
+entitlements file. This has to be a plugin rather than a checked-in file
+because `prebuild` regenerates the entitlements on every run. Android needs no
+plugin configuration — the Play Integrity and Play Services dependencies come
+from this library's own Gradle config via autolinking.
+
+| Option                 | Type                            | Default         | Description                                                                                            |
+| ---------------------- | ------------------------------- | --------------- | ------------------------------------------------------------------------------------------------------ |
+| `appAttestEnvironment` | `'development' \| 'production'` | `'development'` | Value for `com.apple.developer.devicecheck.appattest-environment`. See the note on environments below. |
+
+```json
+{
+  "expo": {
+    "plugins": [
+      [
+        "@baudtech/react-native-device-attest",
+        { "appAttestEnvironment": "production" }
+      ]
+    ]
+  }
+}
+```
+
+Builds distributed through TestFlight, the App Store, or the Apple Developer
+Enterprise Program **ignore this entitlement** and always use the production
+environment, so the default is fine for release builds. It only affects
+locally signed builds — where `development` means your backend must verify
+against `https://data-development.appattest.apple.com` rather than
+`https://data.appattest.apple.com`.
+
+You still need to enable the **App Attest** capability for your App ID in the
+Apple Developer portal (see [Prerequisites](#prerequisites-console-setup)); the
+plugin only writes the client-side entitlement.
 
 ## API
 
@@ -93,6 +155,10 @@ Developer portal, and add the entitlement to the consuming app's
 <key>com.apple.developer.devicecheck.appattest-environment</key>
 <string>development</string> <!-- or "production" -->
 ```
+
+In Expo projects the [config plugin](#expo) writes this entitlement for you on
+every `prebuild`; the Developer-portal capability still has to be enabled by
+hand.
 
 **Android** — register the app in **Google Play Console** with the **Play
 Integrity API** enabled and linked to a **GCP project**, then pass that
