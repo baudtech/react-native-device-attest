@@ -27,7 +27,7 @@ int initialize(JavaVM* vm) {
 }
 
 struct JHybridDeviceAttestSpecImpl: public jni::JavaClass<JHybridDeviceAttestSpecImpl, JHybridDeviceAttestSpec::JavaPart> {
-  static constexpr auto kJavaDescriptor = "Lcom/margelo/nitro/deviceattest/HybridDeviceAttest;";
+  static constexpr auto kJavaDescriptor = "Lcom/deviceattest/HybridDeviceAttest;";
   static std::shared_ptr<JHybridDeviceAttestSpec> create() {
     static const auto constructorFn = javaClassStatic()->getConstructor<JHybridDeviceAttestSpecImpl::javaobject()>();
     jni::local_ref<JHybridDeviceAttestSpec::JavaPart> javaPart = javaClassStatic()->newObject(constructorFn);
