@@ -10,6 +10,7 @@ package com.margelo.nitro.deviceattest
 import androidx.annotation.Keep
 import com.facebook.jni.HybridData
 import com.facebook.proguard.annotations.DoNotStrip
+import dalvik.annotation.optimization.FastNative
 import com.margelo.nitro.core.Promise
 import com.margelo.nitro.core.HybridObject
 
@@ -55,6 +56,7 @@ abstract class HybridDeviceAttestSpec: HybridObject() {
   @Keep
   protected open class CxxPart(javaPart: HybridDeviceAttestSpec): HybridObject.CxxPart(javaPart) {
     // C++ JHybridDeviceAttestSpec::CxxPart::initHybrid(...)
+    @FastNative
     external override fun initHybrid(): HybridData
   }
   override fun createCxxPart(): CxxPart {
