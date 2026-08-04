@@ -25,9 +25,11 @@ updates:
       - 'dependencies'
 
   - package-ecosystem: 'npm'
-    directories:
-      - '/example/'
-      - '/'
+    # Root only: example is an npm workspace of the root package, so updates
+    # raised from here already rewrite example/package.json. Listing it
+    # separately made dependabot see it twice and open duplicate PRs for
+    # anything not covered by a group.
+    directory: '/'
     schedule:
       interval: 'weekly'
     labels:
