@@ -25,15 +25,18 @@ jobs:
       - name: Install dependencies (bun)
         run: bun install
 
-      # Only nitrogen, deliberately not the post-script.js step from
-      # `npm run codegen` — the committed output does not have that step
-      # applied, see https://github.com/baudtech/react-native-device-attest
-      - name: Run nitrogen
-        run: bunx nitrogen
+      # The full pipeline from the `codegen` script, minus the library build.
+      # post-script.js is not optional: it rewrites the Android JNI descriptor
+      # to match the com.deviceattest implementation package, and raw nitrogen
+      # output fails the class lookup at runtime.
+      - name: Run codegen
+        run: |
+          bunx nitrogen
+          node post-script.js
 
       - name: Fail if generated code is stale
         run: |
           if ! git diff --exit-code -- nitrogen/generated; then
-            echo "::error::nitrogen/generated is out of date with the pinned nitrogen version. Run 'nitrogen' and commit the result."
+            echo "::error::nitrogen/generated does not match 'nitrogen && node post-script.js' for the pinned nitrogen version. Run 'npm run codegen' and commit the result."
             exit 1
           fi
