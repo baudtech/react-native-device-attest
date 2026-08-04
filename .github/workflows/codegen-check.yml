@@ -1,0 +1,39 @@
+name: Check Codegen
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  codegen:
+    name: Verify nitrogen output is up to date
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+
+      - name: Install dependencies (bun)
+        run: bun install
+
+      # Only nitrogen, deliberately not the post-script.js step from
+      # `npm run codegen` — the committed output does not have that step
+      # applied, see https://github.com/baudtech/react-native-device-attest
+      - name: Run nitrogen
+        run: bunx nitrogen
+
+      - name: Fail if generated code is stale
+        run: |
+          if ! git diff --exit-code -- nitrogen/generated; then
+            echo "::error::nitrogen/generated is out of date with the pinned nitrogen version. Run 'nitrogen' and commit the result."
+            exit 1
+          fi
