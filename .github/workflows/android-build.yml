@@ -15,6 +15,8 @@ on:
       - 'cpp/**'
       - 'android/**'
       - '**/bun.lock'
+      - '**/package.json'
+      - '**/package-lock.json'
       - '**/react-native.config.js'
       - '**/nitro.json'
   pull_request:
@@ -26,6 +28,8 @@ on:
       - 'cpp/**'
       - 'android/**'
       - '**/bun.lock'
+      - '**/package.json'
+      - '**/package-lock.json'
       - '**/react-native.config.js'
       - '**/nitro.json'
   workflow_dispatch:

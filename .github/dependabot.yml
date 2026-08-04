@@ -4,7 +4,7 @@ updates:
   - package-ecosystem: 'github-actions'
     directory: '/'
     schedule:
-      interval: 'daily'
+      interval: 'weekly'
     labels:
       - 'dependencies'
 
@@ -13,43 +13,51 @@ updates:
       - '/android/'
       - '/example/android/'
     schedule:
-      interval: 'daily'
+      interval: 'weekly'
     labels:
-      - 'nitro-core'
-      - 'nitrogen'
       - 'dependencies'
-      - 'kotlin'
 
   - package-ecosystem: 'bundler'
     directory: '/example/'
     schedule:
-      interval: 'daily'
+      interval: 'weekly'
     labels:
       - 'dependencies'
-      - 'ruby'
 
   - package-ecosystem: 'npm'
     directories:
       - '/example/'
       - '/'
     schedule:
-      interval: 'daily'
+      interval: 'weekly'
     labels:
-      - 'nitro-core'
       - 'dependencies'
-      - 'typescript'
-      - 'nitrogen'
+
+    ignore:
+      # RN 0.86 ships Babel 7 plugins, and @babel/runtime 8 drops entrypoints
+      # they still target (regenerator, helpers/esm/*). Revisit when RN
+      # supports Babel 8.
+      - dependency-name: '@babel/*'
+        update-types:
+          - 'version-update:semver-major'
 
     groups:
+      # react-native and its satellites are version-locked to each other, as
+      # are the react and expo versions each RN release is built against.
+      # Keep them in one PR so they can never drift apart.
+      react-native:
+        patterns:
+          - 'react-native'
+          - '@react-native/*'
+          - 'react'
+          - '@types/react'
+          - 'expo'
       react-native-cli:
         patterns:
           - '@react-native-community/cli*'
       babel:
         patterns:
           - '@babel/*'
-      react-native:
-        patterns:
-          - '@react-native/*'
       nitro:
         patterns:
           - 'nitrogen'
