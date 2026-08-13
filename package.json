@@ -62,7 +62,7 @@
     "@types/jest": "^30.0.0",
     "@types/react": "19.2.18",
     "conventional-changelog-conventionalcommits": "^9.3.1",
-    "expo": "57.0.9",
+    "expo": "57.0.12",
     "nitrogen": "0.36.5",
     "react": "19.2.8",
     "react-native": "0.86.2",
